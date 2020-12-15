@@ -58,7 +58,7 @@ import org.springframework.lang.Nullable;
  * properties file, etc. Implementations are encouraged to support references
  * amongst beans (Dependency Injection).
  *
- * <p>In contrast to the methods in {@link ListableBeanFactory}, all of the
+ * <p>In contrast to the methods in {@link ListwwableBeanFactory}, all of the
  * operations in this interface will also check parent factories if this is a
  * {@link HierarchicalBeanFactory}. If a bean is not found in this factory instance,
  * the immediate parent factory will be asked. Beans in this factory instance
@@ -117,12 +117,15 @@ import org.springframework.lang.Nullable;
 public interface BeanFactory {
 
 	/**
+	 * 如果一个名为myJndiObject的 bean 是一个 工厂bean（FactoryBean），
+	 * 通过前缀 & 获取 myJndiObject（&myJndiObject），返回的是工厂本身，而不是返回的工厂实例
 	 * Used to dereference a {@link FactoryBean} instance and distinguish it from
 	 * beans <i>created</i> by the FactoryBean. For example, if the bean named
 	 * {@code myJndiObject} is a FactoryBean, getting {@code &myJndiObject}
 	 * will return the factory, not the instance returned by the factory.
 	 */
 	String FACTORY_BEAN_PREFIX = "&";
+
 
 
 	/**
@@ -138,7 +141,6 @@ public interface BeanFactory {
 	 * @throws BeansException if the bean could not be obtained
 	 */
 	Object getBean(String name) throws BeansException;
-
 	/**
 	 * Return an instance, which may be shared or independent, of the specified bean.
 	 * <p>Behaves the same as {@link #getBean(String)}, but provides a measure of type

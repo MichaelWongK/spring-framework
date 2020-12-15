@@ -76,6 +76,8 @@ public interface FactoryBean<T> {
 
 
 	/**
+	 *
+	 *
 	 * Return an instance (possibly shared or independent) of the object
 	 * managed by this factory.
 	 * <p>As with a {@link BeanFactory}, this allows support for both the
