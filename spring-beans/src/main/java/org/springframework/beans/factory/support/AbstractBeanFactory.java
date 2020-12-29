@@ -299,15 +299,19 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 				checkMergedBeanDefinition(mbd, beanName, args);
 
 				// Guarantee initialization of beans that the current bean depends on.
+				// 加载 dependsOn 的bean
 				String[] dependsOn = mbd.getDependsOn();
 				if (dependsOn != null) {
 					for (String dep : dependsOn) {
+						// beanName依赖ep，检查两个bean是不是相互依赖了
 						if (isDependent(beanName, dep)) {
 							throw new BeanCreationException(mbd.getResourceDescription(), beanName,
 									"Circular depends-on relationship between '" + beanName + "' and '" + dep + "'");
 						}
+						// 存入两个map
 						registerDependentBean(dep, beanName);
 						try {
+							// 先去生成所依赖的bean
 							getBean(dep);
 						}
 						catch (NoSuchBeanDefinitionException ex) {
@@ -317,8 +321,10 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 					}
 				}
 
+				// 根据scope创建bean
 				// Create bean instance.
 				if (mbd.isSingleton()) {
+					// 创建单例bean，虽然也是signleton方法，但是参数不一样，此处传入一个ObjectFactory
 					sharedInstance = getSingleton(beanName, () -> {
 						try {
 							return createBean(beanName, mbd, args);
