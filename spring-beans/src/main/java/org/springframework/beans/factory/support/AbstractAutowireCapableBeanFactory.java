@@ -614,8 +614,11 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		}
 
 		if (earlySingletonExposure) {
+			// 在解决循环依赖时，当AService的属性注入完了之后，从getSingleton中得到Aservice AOP之后的代理对象
 			Object earlySingletonReference = getSingleton(beanName, false);
 			if (earlySingletonReference != null) {
+				// 如果提前暴露的对象和经过了完整的生命周期后的对象想等，则把代理对象赋值给exposedObject
+				// 最终会添加到singletonObjects中去
 				if (exposedObject == bean) {
 					exposedObject = earlySingletonReference;
 				}
